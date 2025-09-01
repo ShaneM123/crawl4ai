@@ -609,15 +609,15 @@ class EmbeddingStrategy(CrawlStrategy):
     async def _get_embeddings(self, texts: List[str]) -> Any:
         """Get embeddings using configured method"""
         from .utils import get_text_embeddings
-        if  os.getenv('LLM_PROVIDER') and os.getenv('LLM_API_KEY') is not None:
+        if   os.getenv('LLM_API_KEY') is not None:
             embedding_llm_config = {
                 'provider':  os.getenv('LLM_PROVIDER'),
                 'api_token': os.getenv('LLM_API_KEY')
             }
         else:
             embedding_llm_config = {
-                'provider':  "sentence-transformers/all-MiniLM-L6-v2",
-                'api_token': None,
+                'provider':  "xai/grok-code-fast-1",
+                'api_token': os.getenv('LLM_API_KEY')
             }
 
 
@@ -847,15 +847,15 @@ class EmbeddingStrategy(CrawlStrategy):
         
         # Batch embed only uncached links
         if texts_to_embed:
-            if  os.getenv('LLM_PROVIDER') and os.getenv('LLM_API_KEY') is not None:
+            if  os.getenv('LLM_API_KEY') is not None:
                    embedding_llm_config = {
-                       'provider':  os.getenv('LLM_PROVIDER'),
-                       'api_token': os.getenv('LLM_API_KEY')
+                'provider':  "xai/grok-code-fast-1",
+                'api_token': os.getenv('LLM_API_KEY')
                 }
             else:
                embedding_llm_config = {
-                    'provider':  "sentence-transformers/all-MiniLM-L6-v2",
-                    'api_token': None,
+                'provider':  "xai/grok-code-fast-1",
+                'api_token': os.getenv('LLM_API_KEY')
                }
 
             new_embeddings = await get_text_embeddings(texts_to_embed, embedding_llm_config, self.embedding_model)
@@ -1195,15 +1195,15 @@ class EmbeddingStrategy(CrawlStrategy):
             return
             
         # Get embeddings for new texts
-        if  os.getenv('LLM_PROVIDER') and os.getenv('LLM_API_KEY') is not None:
+        if  os.getenv('LLM_API_KEY') is not None:
             embedding_llm_config = {
-                'provider':  os.getenv('LLM_PROVIDER'),
+                'provider':  "xai/grok-code-fast-1",
                 'api_token': os.getenv('LLM_API_KEY')
             }
         else:
             embedding_llm_config = {
-                'provider':  "sentence-transformers/all-MiniLM-L6-v2",
-                'api_token': None,
+                'provider':  "xai/grok-code-fast-1",
+                'api_token': os.getenv('LLM_API_KEY')
             }
 
         new_embeddings = await get_text_embeddings(new_texts, embedding_llm_config, self.embedding_model)
