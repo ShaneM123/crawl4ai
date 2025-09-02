@@ -609,17 +609,7 @@ class EmbeddingStrategy(CrawlStrategy):
     async def _get_embeddings(self, texts: List[str]) -> Any:
         """Get embeddings using configured method"""
         from .utils import get_text_embeddings
-        if   os.getenv('LLM_API_KEY') is not None:
-            embedding_llm_config = {
-                'provider':  os.getenv('LLM_PROVIDER'),
-                'api_token': os.getenv('LLM_API_KEY')
-            }
-        else:
-            embedding_llm_config = {
-                'provider':  "xai/grok-code-fast-1",
-                'api_token': os.getenv('LLM_API_KEY')
-            }
-
+        embedding_llm_config = self.config.embedding_llm_config
 
         return await get_text_embeddings(
             texts, 
@@ -847,16 +837,7 @@ class EmbeddingStrategy(CrawlStrategy):
         
         # Batch embed only uncached links
         if texts_to_embed:
-            if  os.getenv('LLM_API_KEY') is not None:
-                   embedding_llm_config = {
-                'provider':  "xai/grok-code-fast-1",
-                'api_token': os.getenv('LLM_API_KEY')
-                }
-            else:
-               embedding_llm_config = {
-                'provider':  "xai/grok-code-fast-1",
-                'api_token': os.getenv('LLM_API_KEY')
-               }
+            embedding_llm_config = self.config.embedding_llm_config
 
             new_embeddings = await get_text_embeddings(texts_to_embed, embedding_llm_config, self.embedding_model)
 
@@ -1195,16 +1176,7 @@ class EmbeddingStrategy(CrawlStrategy):
             return
             
         # Get embeddings for new texts
-        if  os.getenv('LLM_API_KEY') is not None:
-            embedding_llm_config = {
-                'provider':  "xai/grok-code-fast-1",
-                'api_token': os.getenv('LLM_API_KEY')
-            }
-        else:
-            embedding_llm_config = {
-                'provider':  "xai/grok-code-fast-1",
-                'api_token': os.getenv('LLM_API_KEY')
-            }
+        embedding_llm_config = self.config.embedding_llm_config
 
         new_embeddings = await get_text_embeddings(new_texts, embedding_llm_config, self.embedding_model)
 
