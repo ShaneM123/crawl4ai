@@ -3330,6 +3330,7 @@ async def get_text_embeddings(
         return np.array([])
     
     # If LLMConfig provided, use litellm for embeddings
+    print("LLM_CONFIG:", llm_config)
     if llm_config is not None:
         from litellm import aembedding
         
@@ -3348,8 +3349,8 @@ async def get_text_embeddings(
             kwargs['api_base'] = api_base
             
         # Handle OpenAI-compatible endpoints
-        if api_base and 'openai/' not in embedding_model:
-            kwargs['model'] = f"openai/{embedding_model}"
+        #if api_base and 'openai/' not in embedding_model:
+            kwargs['model'] = f"{embedding_model}"
         
         # Get embeddings
         response = await aembedding(**kwargs)
